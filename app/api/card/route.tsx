@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
-import { todayBrief } from "../../../lib/briefs";
-import { labels, normalizeLang, textOf } from "../../../lib/i18n";
+import { todayBrief } from "@/lib/briefs";
+import { labels, normalizeLang, textOf } from "@/lib/i18n";
 
 export const runtime = "edge";
 
