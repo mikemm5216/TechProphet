@@ -6,10 +6,10 @@ import { signupCopy } from "../lib/i18n";
 
 export function SignupForm({ lang }: { lang: Lang }) {
   const copy = signupCopy[lang];
-  const [email, setEmail] = useState("");
-  const [role, setRole] = useState(copy.roles[0]);
-  const [status, setStatus] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState<string>("");
+  const [role, setRole] = useState<string>(copy.roles[0]);
+  const [status, setStatus] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
   async function submit(event: React.FormEvent) {
     event.preventDefault();
