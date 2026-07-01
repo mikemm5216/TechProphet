@@ -1,22 +1,25 @@
 # TechProphet MVP V0.1
 
-TechProphet is a Vercel-ready Next.js MVP for a **Global Electronics Intelligence Brief**.
+TechProphet is a Vercel-ready Next.js MVP for a **news-first Global Electronics Intelligence Brief**.
 
 It is designed for electronics sales, PM, procurement, executives, and engineers. The product does **not** repost paid-media articles. It turns public-source signals into:
 
-- Top 3 daily supply-chain signals
+- News-first homepage with today’s Top 3 supply-chain signals
+- Daily brief archive so historical editions are preserved
 - Mo's Sight: metaphor + mechanism + metrics
 - Business Talk: a customer-facing talking point
 - One-page 9:16 share card
-- Email waitlist / webhook integration
-- Future daily cron workflow
+- Email subscription / webhook integration
+- Future backend cron workflow for automated daily updates
 
 ## What is included
 
 ```text
 app/
-  page.tsx                    Landing page
-  briefs/today/page.tsx       Daily sample brief
+  page.tsx                    News-first homepage
+  briefs/today/page.tsx       Today brief
+  briefs/page.tsx             Brief archive
+  briefs/[date]/page.tsx      Historical brief page
   card/page.tsx               Browser card demo
   api/briefs/today/route.ts   JSON brief API
   api/card/route.tsx          1080x1920 PNG generation API
@@ -45,6 +48,7 @@ Open:
 ```text
 http://localhost:3000
 http://localhost:3000/briefs/today
+http://localhost:3000/briefs
 http://localhost:3000/card
 http://localhost:3000/api/card
 ```

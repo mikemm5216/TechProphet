@@ -1,0 +1,20 @@
+import type { Metadata } from "next";
+import "./globals.css";
+
+export const metadata: Metadata = {
+  title: "TechProphet — Global Electronics Intelligence Brief",
+  description: "A daily electronics supply-chain brief with Mo's Sight, business talk, and one-page share cards.",
+  openGraph: {
+    title: "TechProphet",
+    description: "Global electronics supply-chain signals translated into business-ready insight.",
+    type: "website"
+  }
+};
+
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  return (
+    <html lang="zh-Hant">
+      <body>{children}</body>
+    </html>
+  );
+}
