@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { todayBrief } from "../../../../lib/briefs";
+import { todayBrief } from "@/lib/briefs";
 
 export async function GET() {
   return NextResponse.json(todayBrief, {
