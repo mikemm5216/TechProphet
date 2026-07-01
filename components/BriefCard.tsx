@@ -1,22 +1,29 @@
-import type { BriefItem } from "../lib/types";
+import type { BriefItem, Lang } from "../lib/types";
+import { labels, layerLabels, maturityLabels, regionLabels, signalTypeLabels, textOf } from "../lib/i18n";
 
-export function BriefCard({ item }: { item: BriefItem }) {
+export function BriefCard({ item, lang }: { item: BriefItem; lang: Lang }) {
+  const copy = labels[lang];
+
   return (
-    <article className="card">
-      <div className="tag">TOP {item.rank} · {item.layer} · {item.region}</div>
-      <h3>{item.title}</h3>
+    <article className="card brief-card">
+      <div className="tag">
+        {copy.top} {item.rank} · {layerLabels[lang][item.layer]} · {regionLabels[lang][item.region]}
+      </div>
+      <h3>{textOf(item.title, lang)}</h3>
       <div className="meta">
         {item.tags.slice(0, 5).map((tag) => <span className="pill" key={tag}>{tag}</span>)}
-        <span className="pill hot">{item.maturity}</span>
+        <span className="pill hot">{maturityLabels[lang][item.maturity]}</span>
       </div>
-      <p>{item.summary}</p>
-      <div className="mos-sight"><strong>Mo&apos;s Sight</strong><br />{item.moSight}</div>
-      <p><strong>Supply-chain impact:</strong> {item.supplyChainImpact}</p>
-      <p><strong>Business Talk:</strong> {item.businessTalk}</p>
+      <p>{textOf(item.summary, lang)}</p>
+      <div className="mos-sight"><strong>{copy.moSight}</strong><br />{textOf(item.moSight, lang)}</div>
+      <p><strong>{copy.supplyChainImpact}：</strong>{textOf(item.supplyChainImpact, lang)}</p>
+      <p><strong>{copy.businessTalk}：</strong>{textOf(item.businessTalk, lang)}</p>
       <ul className="metric-list">
-        {item.metrics.map((metric) => <li key={metric}>{metric}</li>)}
+        {item.metrics.map((metric) => <li key={textOf(metric, lang)}>{textOf(metric, lang)}</li>)}
       </ul>
-      <p className="tag">Source mode: {item.confidence} · <a href={item.sourceUrl}>Read original</a></p>
+      <p className="tag">
+        {copy.signalType}: {signalTypeLabels[lang][item.signalType]} · <a href={item.sourceUrl} target="_blank" rel="noreferrer">{copy.source}</a>
+      </p>
     </article>
   );
 }

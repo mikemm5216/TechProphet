@@ -1,8 +1,10 @@
 import { NextResponse } from "next/server";
+import { normalizeLang } from "../../../lib/i18n";
 
 type SubscribePayload = {
   email?: string;
   role?: string;
+  lang?: string;
 };
 
 function isEmail(value: string) {
@@ -13,16 +15,17 @@ export async function POST(request: Request) {
   const payload = (await request.json().catch(() => ({}))) as SubscribePayload;
   const email = payload.email?.trim().toLowerCase();
   const role = payload.role?.trim() || "Unknown";
+  const lang = normalizeLang(payload.lang);
 
   if (!email || !isEmail(email)) {
-    return NextResponse.json({ message: "請輸入有效 Email" }, { status: 400 });
+    return NextResponse.json({ message: lang === "zh" ? "請輸入有效 Email" : "Please enter a valid email" }, { status: 400 });
   }
 
   const webhookUrl = process.env.SUBSCRIBE_WEBHOOK_URL;
   const record = {
     email,
     role,
-    product: "TechProphet V0.1",
+    product: "TechProphet",
     createdAt: new Date().toISOString()
   };
 
@@ -34,12 +37,14 @@ export async function POST(request: Request) {
     });
 
     if (!res.ok) {
-      return NextResponse.json({ message: "Webhook 寫入失敗，請稍後再試" }, { status: 502 });
+      return NextResponse.json({ message: lang === "zh" ? "訂閱暫時失敗，請稍後再試" : "Subscription failed. Please try again later." }, { status: 502 });
     }
   }
 
   return NextResponse.json({
-    message: webhookUrl ? "已加入樣刊名單" : "已收到。尚未設定 webhook，現在是本機測試模式。",
+    message: webhookUrl
+      ? (lang === "zh" ? "已加入樣刊名單" : "You are on the sample brief list")
+      : (lang === "zh" ? "已收到。樣刊正式寄送前會先保留你的資料。" : "Received. We will keep your email before the sample brief launches."),
     record
   });
 }
