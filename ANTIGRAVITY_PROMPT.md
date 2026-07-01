@@ -1,45 +1,78 @@
-# Antigravity / Coding Agent Prompt
+import { Nav } from "../components/Nav";
+import { SignupForm } from "../components/SignupForm";
+import { BriefCard } from "../components/BriefCard";
+import { allBriefs, todayBrief } from "../lib/briefs";
+import { homeCopy, labels, marketWeatherLabels, normalizeLang, textOf, withLang } from "../lib/i18n";
 
-Build and refine this existing Next.js App Router project called `TechProphet`.
+type PageProps = {
+  searchParams?: Promise<{ lang?: string | string[] }>;
+};
 
-Product: Global Electronics Intelligence Brief for electronics sales, PM, procurement, executives, and engineers.
+export default async function Home({ searchParams }: PageProps) {
+  const params = await searchParams;
+  const lang = normalizeLang(params?.lang);
+  const copy = homeCopy[lang];
+  const label = labels[lang];
+  const lead = todayBrief.items[0];
+  const recentBriefs = allBriefs.slice(0, 5);
 
-Do not mix this product with Mosport. This is not a sports product.
+  return (
+    <>
+      <Nav lang={lang} />
+      <main className="page-shell">
+        <section className="news-hero">
+          <div className="lead-story card">
+            <div className="eyebrow">{copy.eyebrow}</div>
+            <div className="edition-line">{todayBrief.date} · {marketWeatherLabels[lang][todayBrief.marketWeather]}</div>
+            <h1>{copy.title}</h1>
+            <p className="hero-copy">{copy.hero}</p>
+            <div className="cta-row">
+              <a className="btn primary" href={withLang("/briefs/today", lang)}>{copy.primaryCta}</a>
+              <a className="btn" href={withLang("/briefs", lang)}>{copy.secondaryCta}</a>
+            </div>
+          </div>
 
-Core requirements:
+          <aside className="daily-front card">
+            <div className="masthead"><span>TechProphet</span><span>{todayBrief.edition}</span></div>
+            <div className="tag" style={{ marginTop: 18 }}>{copy.liveTitle}</div>
+            <h2>{textOf(lead.title, lang)}</h2>
+            <p>{textOf(lead.summary, lang)}</p>
+            <div className="mos-sight"><strong>{label.moSight}</strong><br />{textOf(lead.moSight, lang)}</div>
+            <p><strong>{label.businessTalk}：</strong>{textOf(lead.businessTalk, lang)}</p>
+          </aside>
+        </section>
 
-1. Keep the product positioning global. China source coverage must be included in the backend/source layer, but do not turn the brand into a China/Taiwan/US-only product.
-2. V0.1 must include:
-   - Landing page
-   - Today's sample brief
-   - Top 3 signals
-   - Mo's Sight
-   - Business Talk
-   - Email waitlist
-   - 9:16 PNG card API
-3. Legal guardrails:
-   - Do not scrape or reproduce paid-media full text.
-   - Use public titles, public summaries, company PR, filings, official announcements, RSS metadata, and source links.
-   - Every brief must include source name and source URL.
-   - AI generated content must be draft until reviewed.
-4. Mo's Sight style:
-   - Explain new or newly important technical terms.
-   - Do not waste space explaining generic terms like PCB or semiconductor unless the market context changed.
-   - Use metaphor + mechanism + metrics.
-   - Include old vs new comparison.
-   - Include Business Talk for customer conversation.
-5. UI style:
-   - Cyber-magic newspaper.
-   - Dark mode.
-   - High contrast.
-   - Modern Daily Prophet inspiration without using copyrighted assets.
-   - Neon lime/cyan accents.
-6. Do not add gambling, investment advice, stock picks, or guaranteed claims.
+        <section className="section">
+          <h2>{copy.topSignalsTitle}</h2>
+          <p className="section-lead">{copy.topSignalsLead}</p>
+          <div className="grid three" style={{ marginTop: 22 }}>
+            {todayBrief.items.map((item) => <BriefCard item={item} lang={lang} key={item.id} />)}
+          </div>
+        </section>
 
-Immediate engineering tasks:
+        <section className="section archive-section">
+          <div>
+            <h2>{copy.archiveTitle}</h2>
+            <p className="section-lead">{copy.archiveLead}</p>
+          </div>
+          <div className="archive-list">
+            {recentBriefs.map((brief) => (
+              <a className="archive-row" href={withLang(`/briefs/${brief.date}`, lang)} key={brief.date}>
+                <span>{brief.date}</span>
+                <strong>{textOf(brief.headline, lang)}</strong>
+              </a>
+            ))}
+            <a className="btn" href={withLang("/briefs", lang)}>{lang === "zh" ? "查看全部歷史資料" : "View all editions"}</a>
+          </div>
+        </section>
 
-- Make sure `npm run build` passes.
-- Preserve current route structure.
-- Improve mobile readability.
-- Add accessible labels where needed.
-- Keep external dependencies minimal.
+        <section className="section" id="waitlist">
+          <h2>{copy.signupTitle}</h2>
+          <p className="section-lead">{copy.signupLead}</p>
+          <SignupForm lang={lang} />
+        </section>
+      </main>
+      <footer className="footer page-shell">{copy.footer}</footer>
+    </>
+  );
+}
