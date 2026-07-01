@@ -1,0 +1,30 @@
+import type { BriefItem, Lang } from "@/lib/types";
+import { labels, layerLabels, maturityLabels, regionLabels, signalTypeLabels, textOf } from "@/lib/i18n";
+
+export function BriefCard({ item, lang }: { item: BriefItem; lang: Lang }) {
+  const copy = labels[lang];
+
+  return (
+    <article className="card brief-card">
+      <img className="brief-image" src={item.image} alt={textOf(item.title, lang)} />
+      <div className="tag">
+        {copy.top} {item.rank} · {layerLabels[lang][item.layer]} · {regionLabels[lang][item.region]}
+      </div>
+      <h3>{textOf(item.title, lang)}</h3>
+      <div className="meta">
+        {item.tags.slice(0, 5).map((tag) => <span className="pill" key={tag}>{tag}</span>)}
+        <span className="pill hot">{maturityLabels[lang][item.maturity]}</span>
+      </div>
+      <p>{textOf(item.summary, lang)}</p>
+      <div className="mos-sight"><strong>{copy.moSight}</strong><br />{textOf(item.moSight, lang)}</div>
+      <p><strong>{copy.supplyChainImpact}：</strong>{textOf(item.supplyChainImpact, lang)}</p>
+      <p><strong>{copy.businessTalk}：</strong>{textOf(item.businessTalk, lang)}</p>
+      <ul className="metric-list">
+        {item.metrics.map((metric) => <li key={textOf(metric, lang)}>{textOf(metric, lang)}</li>)}
+      </ul>
+      <p className="tag">
+        {copy.signalType}: {signalTypeLabels[lang][item.signalType]} · <a href={item.sourceUrl} target="_blank" rel="noreferrer">{copy.source}</a>
+      </p>
+    </article>
+  );
+}

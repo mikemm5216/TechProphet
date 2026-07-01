@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img" aria-label="TechProphet icon">
+  <defs>
+    <linearGradient id="g" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#00F0FF"/><stop offset="1" stop-color="#CCFF00"/></linearGradient>
+    <filter id="s"><feDropShadow dx="0" dy="0" stdDeviation="8" flood-color="#00F0FF" flood-opacity=".55"/></filter>
+  </defs>
+  <rect width="256" height="256" rx="58" fill="#050A14"/>
+  <path d="M56 65h144M128 65v126M86 103h84M98 142h60" stroke="url(#g)" stroke-width="18" stroke-linecap="round" filter="url(#s)"/>
+  <circle cx="128" cy="195" r="18" fill="#CCFF00"/>
+</svg>
