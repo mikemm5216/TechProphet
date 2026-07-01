@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { todayBrief } from "../../../../lib/briefs";
+import { todayBrief } from "@/lib/briefs";
 
 function unauthorized() {
   return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
